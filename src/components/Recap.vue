@@ -14,20 +14,18 @@
     </v-card-item>
 
     <v-card-text>
-      
-
       <v-row>
         <v-col>
           Nome: 
         </v-col>
         <v-col>
-          Pippo 
+          {{ props?.data['1'].data.firstName }}
         </v-col>
         <v-col>
           Cognome: 
         </v-col>
         <v-col>
-          baudo 
+          {{ props?.data['1'].data.lastName }} 
         </v-col>
       </v-row>
       <v-row>
@@ -35,13 +33,13 @@
           DOB: 
         </v-col>
         <v-col>
-          25/11/1994 
+          {{ props?.data['1'].data.birthDate }}
         </v-col>
         <v-col>
           CF: 
         </v-col>
         <v-col>
-          AAAAAA00A00A000A 
+          {{ props?.data['1'].data.fiscalCode }} 
         </v-col>
       </v-row>
 
@@ -50,13 +48,13 @@
           Tel: 
         </v-col>
         <v-col>
-          00000000 
+          {{ props?.data['2'].data.phoneNumber }}  
         </v-col>
         <v-col>
           Mail: 
         </v-col>
         <v-col>
-          a@a.it 
+          {{ props?.data['2'].data.email }}  
         </v-col>
       </v-row>
       <v-row>
@@ -64,7 +62,12 @@
           Indirizzo: 
         </v-col>
         <v-col>
-          Via di qua, 15, Caorso, Piacenza, Emilia Romagna
+          {{ props?.data['2'].data.street }},
+          {{ props?.data['2'].data.houseNumber }}
+          {{ props?.data['2'].data.city }}
+          {{ props?.data['2'].data.province }}
+          {{ props?.data['2'].data.cap }}
+          {{ props?.data['2'].data.region }}
         </v-col>
       </v-row>
     </v-card-text>
@@ -76,5 +79,5 @@
 </template>
 
 <script setup>
-
+const props = defineProps(['data']);
 </script>

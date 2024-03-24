@@ -3,45 +3,43 @@
     <v-card class="rounded-lg py-4 px-8" elevation="8">
       <form @submit.prevent="handleSubmit">
         <v-row>
-          <!-- fare che tipo sia precompilato e non modificabile -->
           <v-col cols="12" md="6">
             <v-text-field
-              v-model="state.firstName"
-              :error-messages="v$.firstName.$errors.map((e) => e.$message)"
-              label="Nome"
+              v-model="state.street"
+              :error-messages="v$.street.$errors.map((e) => e.$message)"
+              label="Via"
               required
               variant="underlined"
               color="deep-purple-lighten-1"
-              @blur="v$.firstName.$touch"
-              @input="v$.firstName.$touch"
+              @blur="v$.street.$touch"
+              @input="v$.street.$touch"
             ></v-text-field>
           </v-col>
 
-          <!-- fare che tipo sia precompilato e non modificabile -->
           <v-col cols="12" md="6">
             <v-text-field
-              v-model="state.lastName"
-              :error-messages="v$.lastName.$errors.map((e) => e.$message)"
-              label="Cognome"
+              v-model="state.houseNumber"
+              :error-messages="v$.houseNumber.$errors.map((e) => e.$message)"
+              label="Civico"
               required
               variant="underlined"
               color="deep-purple-lighten-1"
-              @blur="v$.lastName.$touch"
-              @input="v$.lastName.$touch"
+              @blur="v$.houseNumber.$touch"
+              @input="v$.houseNumber.$touch"
             ></v-text-field>
           </v-col>
 
           <v-col cols="12" md="6">
             <v-select
-              v-model="state.region"
-              :items="regions"
-              :error-messages="v$.region.$errors.map((e) => e.$message)"
-              label="Regione"
+              v-model="state.city"
+              :items="cities"
+              :error-messages="v$.city.$errors.map((e) => e.$message)"
+              label="Città"
               required
               variant="underlined"
               color="deep-purple-lighten-1"
-              @blur="v$.region.$touch"
-              @input="v$.region.$touch"
+              @blur="v$.city.$touch"
+              @input="v$.city.$touch"
             ></v-select>
           </v-col>
 
@@ -61,29 +59,30 @@
 
           <v-col cols="12" md="6">
             <v-select
-              v-model="state.city"
-              :items="cities"
-              :error-messages="v$.city.$errors.map((e) => e.$message)"
-              label="Città"
+              v-model="state.cap"
+              :items="cap"
+              :error-messages="v$.cap.$errors.map((e) => e.$message)"
+              label="CAP"
               required
               variant="underlined"
               color="deep-purple-lighten-1"
-              @blur="v$.city.$touch"
-              @input="v$.city.$touch"
+              @blur="v$.cap.$touch"
+              @input="v$.cap.$touch"
             ></v-select>
           </v-col>
 
           <v-col cols="12" md="6">
-            <v-text-field
-              v-model="state.houseNumber"
-              :error-messages="v$.houseNumber.$errors.map((e) => e.$message)"
-              label="Civico"
+            <v-select
+              v-model="state.region"
+              :items="regions"
+              :error-messages="v$.region.$errors.map((e) => e.$message)"
+              label="Regione"
               required
               variant="underlined"
               color="deep-purple-lighten-1"
-              @blur="v$.houseNumber.$touch"
-              @input="v$.houseNumber.$touch"
-            ></v-text-field>
+              @blur="v$.region.$touch"
+              @input="v$.region.$touch"
+            ></v-select>
           </v-col>
 
           <v-col cols="12" md="6">
@@ -133,11 +132,10 @@ const props = defineProps(['step']);
 const emit = defineEmits(['onUpdate']);
 
 const state = ref({
-  firstName: "",
-  lastName: "",
-  region: "",
-  province: "",
+  street: "",
   city: "",
+  province: "",
+  region: "",
   houseNumber: "",
   email: "",
   phoneNumber: "",
@@ -149,9 +147,11 @@ const provinces = ["piacenza", "Milano", "Cosenza", "Torino"];
 
 const cities = ["Caorso", "Assago", "Lamezia", "Settimo Torinese"];
 
+const cap = ["23900", "29010", "20900", "60900"];
+
 const rules = {
-  firstName: { required },
-  lastName: { required },
+  cap: { required },
+  street: { required },
   region: { required },
   province: { required },
   city: { required },

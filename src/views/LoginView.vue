@@ -22,11 +22,16 @@
 
   const email = ref('');
   const password = ref('');
+  const error = ref(null)
 
-  const login = () => {
-    // Implement your login logic here
-    console.log('Logging in...');
-  };
+  const login = async () => {
+  try {
+    await authStore.login(email.value, password.value);
+    router.push('/register');
+  } catch (err) {
+    error.value = err.message;
+  }
+};
 </script>
 
 <style lang="scss" scoped>

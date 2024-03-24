@@ -15,10 +15,10 @@
     </template>
 
     <template v-slot:item.3>
-      <Recap/>
+      <Recap :data="stepState" />
     </template>
 
-    <v-stepper-actions :disabled="actionDisabled" @click:next="onNext" @click:prev="onPrev" />
+    <v-stepper-actions :disabled="actionDisabled" @click:next="onNext" @click:prev="onPrev" :next-text="getNextText" />
   </v-stepper>
 </template>
 
@@ -31,6 +31,9 @@ import Recap from '../components/Recap.vue';
 const stepper = ref(null);
 const step = ref(1);
 const actionDisabled = ref(true);
+
+const emit = defineEmits(['onSubmit']);
+
 const items = [
   'Personal Info',
   'Shipping',
@@ -39,7 +42,6 @@ const items = [
 const stepState = {
   '1': {},
   '2': {},
-  '3': {},
 }
 
 const onStepUpdate = (event) => {
@@ -52,12 +54,7 @@ const onStepUpdate = (event) => {
       stepState[event.step] = event
       actionDisabled.value = getActionDisabled(true, event.completed)
       break
-    case '3':
-      stepState[event.step] = event
-      actionDisabled.value = getActionDisabled(true, event.completed)
-      break
     default:
-      actionDisabled.value = getActionDisabled(false, false)
       break;
   }
 }
@@ -65,7 +62,7 @@ const onStepUpdate = (event) => {
 const getActionDisabled = (prev, next) => {
   if (prev && next) {
     return false
-  } else if (!prev && !next ) {
+  } else if (!prev && !next) {
     return true
   } else if (!prev && next) {
     return 'prev'
@@ -74,17 +71,32 @@ const getActionDisabled = (prev, next) => {
   }
 }
 
+const getNextText = computed(() => {
+  if (step.value == items.length) {
+    return 'Submit'
+  } else {
+    return 'Next'
+  }
+})
+
 const onNext = () => {
+  if (step.value == items.length) {
+    // submit here
+    return
+  }
+
   stepper.value.next()
-  console.log('next', step.value, stepState[step.value].completed)
-  actionDisabled.value = getActionDisabled(true, stepState[step.value].completed)
+  if (step.value < items.length - 1) {
+    actionDisabled.value = getActionDisabled(true, stepState[step.value].completed)
+  } else {
+    actionDisabled.value = getActionDisabled(true, true)
+  }
 }
 const onPrev = () => {
   stepper.value.prev()
-  console.log('prev', step.value, stepState[step.value].completed)
   if (step.value == 1) {
     actionDisabled.value = getActionDisabled(false, stepState['1'].completed)
-  } else {
+  } else if (step.value < items.length - 1) {
     actionDisabled.value = getActionDisabled(true, stepState[step.value].completed)
   }
 }
@@ -94,13 +106,3 @@ const onPrev = () => {
 <style lang="scss">
 
 </style>
-
-<!-- 
-  const submitData = () => {
-  const personalData = personalDataForm.value.getData();
-  const shippingData = shippingForm.value.getData();
-  
-  console.log('Personal Data:', personalData);
-  console.log('Shipping Data:', shippingData);
-};
- -->
