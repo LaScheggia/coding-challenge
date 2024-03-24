@@ -69,32 +69,27 @@
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-btn class="me-4" @click="handleSubmit"> submit </v-btn>
-
-        <v-btn @click="clear"> clear </v-btn>
+        <v-btn style="display: none;" :disabled="formIncomplete"/>
       </form>
     </v-card>
   </v-container>
 </template>
 
 <script setup>
-import { reactive, computed } from "vue";
+import { ref, computed } from 'vue';
 import { useVuelidate } from "@vuelidate/core";
-import { required, helpers } from "@vuelidate/validators";
+import { required } from "@vuelidate/validators";
 
-const initialState = {
+const props = defineProps(['step']);
+const emit = defineEmits(['onUpdate']);
+
+const state = ref({
   firstName: "",
   lastName: "",
   birthDate: "",
   birthPlace: "",
   fiscalCode: "",
-};
-
-const state = reactive({
-  ...initialState,
 });
-
-// const validCode = helpers.regex(/^YOUR_VALID_CODE_REGEX_HERE$/i);
 
 const rules = {
   firstName: { required },
@@ -104,39 +99,20 @@ const rules = {
   fiscalCode: { required },
 };
 
-const v$ = useVuelidate(rules, state);
+const v$ = useVuelidate(rules, state.value);
 
-const getData = computed(() => {
-  return {
-    firstName: state.firstName,
-    lastName: state.lastName,
-    birthDate: state.birthDate,
-    birthPlace: state.birthPlace,
-    fiscalCode: state.fiscalCode,
-  };
+const formIncomplete = computed(() => {
+  emit('onUpdate', {
+    completed: !v$.value.$invalid,
+    step: props?.step,
+    data: !v$.value.$invalid ? { ...state.value } : null,
+  });
+
+  const isComplete =  Object.values(state.value).every(value => value);
+  if (isComplete && !v$.value.$invalid) {
+    v$.value.$touch();
+  }
+  return !isComplete;
 });
 
-function clear() {
-  v$.value.$reset();
-
-  for (const [key, value] of Object.entries(initialState)) {
-    state[key] = value;
-  }
-}
-
-function handleSubmit() {
-  v$.value.$touch(); // Touch all fields to show validation errors
-
-  if (!v$.value.$invalid) {
-    // Form is valid, proceed with submitting data
-    const formData = getData.value;
-    console.log("Submitting form data:", formData);
-
-    // Emit the form data to the parent component
-    emit("formData", formData);
-  } else {
-    // Form is invalid, do something (e.g., show error message)
-    console.log("Form has validation errors, cannot submit.");
-  }
-}
 </script>

@@ -112,14 +112,14 @@
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-btn class="me-4" @click="handleSubmit"> submit </v-btn>
+        <v-btn style="display: none;" :disabled="formIncomplete"/>
       </form>
     </v-card>
   </v-container>
 </template>
 
 <script setup>
-import { reactive, computed } from "vue";
+import { ref, computed } from 'vue';
 import { useVuelidate } from "@vuelidate/core";
 import {
   email,
@@ -129,7 +129,10 @@ import {
   maxLength,
 } from "@vuelidate/validators";
 
-const initialState = {
+const props = defineProps(['step']);
+const emit = defineEmits(['onUpdate']);
+
+const state = ref({
   firstName: "",
   lastName: "",
   region: "",
@@ -138,10 +141,6 @@ const initialState = {
   houseNumber: "",
   email: "",
   phoneNumber: "",
-};
-
-const state = reactive({
-  ...initialState,
 });
 
 const regions = ["Emilia", "Lombardia", "Calabria", "Piemonte"];
@@ -161,47 +160,25 @@ const rules = {
   phoneNumber: {
     required,
     numeric,
-    minLength: minLength(12),
+    minLength: minLength(9),
     maxLength: maxLength(12),
   },
 };
 
 const v$ = useVuelidate(rules, state);
 
-const getData = computed(() => {
-  return {
-    firstName: state.firstName,
-    lastName: state.lastName,
-    region: state.region,
-    province: state.province,
-    city: state.city,
-    houseNumber: state.houseNumber,
-    email: state.email,
-    phoneNumber: state.phoneNumber,
-  };
+const formIncomplete = computed(() => {
+  emit('onUpdate', {
+    completed: !v$.value.$invalid,
+    step: props?.step,
+    data: !v$.value.$invalid ? { ...state.value } : null,
+  });
+
+  const isComplete =  Object.values(state.value).every(value => value);
+  if (isComplete && !v$.value.$invalid) {
+    v$.value.$touch();
+  }
+  return !isComplete;
 });
 
-function clear() {
-  v$.value.$reset();
-
-  for (const [key, value] of Object.entries(initialState)) {
-    state[key] = value;
-  }
-}
-
-function handleSubmit() {
-  v$.value.$touch(); // Touch all fields to show validation errors
-
-  if (!v$.value.$invalid) {
-    // Form is valid, proceed with submitting data
-    const formData = getData.value;
-    console.log("Submitting form data:", formData);
-
-    // Emit the form data to the parent component
-    emit("formData", formData);
-  } else {
-    // Form is invalid, do something (e.g., show error message)
-    console.log("Form has validation errors, cannot submit.");
-  }
-}
 </script>
