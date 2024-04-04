@@ -1,6 +1,6 @@
 # new-test-project
 
-This template should help get you started developing with Vue 3 in Vite.
+This is the required project.
 
 ## Recommended IDE Setup
 
@@ -27,3 +27,5 @@ npm run dev
 ```sh
 npm run build
 ```
+
+
