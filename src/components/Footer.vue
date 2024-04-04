@@ -8,13 +8,12 @@
         Praesent ut risus eget metus luctus accumsan id ultrices nunc. 
         Sed at orci sed massa consectetur dignissim a sit amet dui. Duis commodo vitae velit et faucibus. 
         Morbi vehicula lacinia malesuada. Nulla placerat augue vel ipsum ultrices, cursus iaculis dui sollicitudin. 
-        Vestibulum eu ipsum vel diam elementum tempor vel ut orci. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
       </div>
 
       <v-divider></v-divider>
 
       <v-col class="text-center mt-2" cols="12">
-        {{ new Date().getFullYear() }} — <strong>Made with </strong>
+        {{ new Date().getFullYear() }} — <strong>Made with &#x2764;</strong>
       </v-col>
     </v-row>
   </v-footer>

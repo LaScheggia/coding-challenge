@@ -78,6 +78,36 @@
   </v-card>
 </template>
 
+
 <script setup>
+import { defineProps } from 'vue';
+
+import { useRouter } from 'vue-router';
+
 const props = defineProps(['data']);
+const router = useRouter();
+
+const handleSubmit = async () => {
+  try {
+
+    showAlert();
+
+    const response = await FakeAPI.submitData(props.data);
+
+    // Check if the submission was successful
+    if (response.success) {
+      // Redirect to homepage after 3 seconds
+      setTimeout(() => {
+        router.push('/');
+      }, 3000);
+    } else {
+      // Handle submission failure
+      console.error('Submission failed:', response.error);
+      alert('Submission failed. Please try again.');
+    }
+  } catch (error) {
+    console.error('Error submitting data:', error);
+    alert('An error occurred. Please try again.');
+  }
+};
 </script>

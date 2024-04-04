@@ -7,7 +7,7 @@
             <v-text-field
               v-model="state.firstName"
               :error-messages="v$.firstName.$errors.map((e) => e.$message)"
-              label="Nome"
+              label="First Name"
               required
               variant="underlined"
               color="deep-purple-lighten-1"
@@ -20,7 +20,7 @@
             <v-text-field
               v-model="state.lastName"
               :error-messages="v$.lastName.$errors.map((e) => e.$message)"
-              label="Cognome"
+              label="Last Name"
               required
               variant="underlined"
               color="deep-purple-lighten-1"
@@ -34,7 +34,7 @@
               v-model="state.birthDate"
               :error-messages="v$.birthDate.$errors.map((e) => e.$message)"
               type="date"
-              label="Data di Nascita"
+              label="Birth Date"
               required
               variant="underlined"
               color="deep-purple-lighten-1"
@@ -47,7 +47,7 @@
             <v-text-field
               v-model="state.birthPlace"
               :error-messages="v$.birthPlace.$errors.map((e) => e.$message)"
-              label="Città di Nascita"
+              label="Birth Place"
               required
               variant="underlined"
               color="deep-purple-lighten-1"
@@ -60,7 +60,7 @@
             <v-text-field
               v-model="state.fiscalCode"
               :error-messages="v$.fiscalCode.$errors.map((e) => e.$message)"
-              label="Codice Fiscale"
+              label="Fiscal Code"
               required
               variant="underlined"
               color="deep-purple-lighten-1"
@@ -78,7 +78,11 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useVuelidate } from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
+import {
+  required,
+  minLength,
+  maxLength,
+} from "@vuelidate/validators";
 
 const props = defineProps(['step']);
 const emit = defineEmits(['onUpdate']);
@@ -92,11 +96,11 @@ const state = ref({
 });
 
 const rules = {
-  firstName: { required },
-  lastName: { required },
+  firstName: { required, minLength: minLength(3) },
+  lastName: { required, minLength: minLength(3) },
   birthDate: { required },
   birthPlace: { required },
-  fiscalCode: { required },
+  fiscalCode: { required, minLength: minLength(16), maxLength: maxLength(16), },
 };
 
 const v$ = useVuelidate(rules, state.value);

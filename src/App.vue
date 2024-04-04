@@ -4,7 +4,6 @@
     <NavBar/>
 
     <v-main>
-      <!-- Your main content here -->
 
       <router-view></router-view>
     </v-main>
@@ -18,10 +17,16 @@
 import NavBar from './components/NavBar.vue'; // Import your NavBar component here
 import Footer from './components/Footer.vue'; // Import your Footer component here
 
+
+import { useAuthStore } from '@/stores';
+
+const authStore = useAuthStore();
+
 </script>
 
 
 <style scoped>
+
 
 
 </style>

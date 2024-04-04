@@ -7,7 +7,7 @@
             <v-text-field
               v-model="state.street"
               :error-messages="v$.street.$errors.map((e) => e.$message)"
-              label="Via"
+              label="Street"
               required
               variant="underlined"
               color="deep-purple-lighten-1"
@@ -20,7 +20,7 @@
             <v-text-field
               v-model="state.houseNumber"
               :error-messages="v$.houseNumber.$errors.map((e) => e.$message)"
-              label="Civico"
+              label="House Number"
               required
               variant="underlined"
               color="deep-purple-lighten-1"
@@ -34,7 +34,7 @@
               v-model="state.city"
               :items="cities"
               :error-messages="v$.city.$errors.map((e) => e.$message)"
-              label="Città"
+              label="City"
               required
               variant="underlined"
               color="deep-purple-lighten-1"
@@ -48,7 +48,7 @@
               v-model="state.province"
               :items="provinces"
               :error-messages="v$.province.$errors.map((e) => e.$message)"
-              label="Provincia"
+              label="Province"
               required
               variant="underlined"
               color="deep-purple-lighten-1"
@@ -62,7 +62,7 @@
               v-model="state.cap"
               :items="cap"
               :error-messages="v$.cap.$errors.map((e) => e.$message)"
-              label="CAP"
+              label="ZIP Code"
               required
               variant="underlined"
               color="deep-purple-lighten-1"
@@ -76,7 +76,7 @@
               v-model="state.region"
               :items="regions"
               :error-messages="v$.region.$errors.map((e) => e.$message)"
-              label="Regione"
+              label="Region"
               required
               variant="underlined"
               color="deep-purple-lighten-1"
@@ -89,7 +89,7 @@
             <v-text-field
               v-model="state.email"
               :error-messages="v$.email.$errors.map((e) => e.$message)"
-              label="E-mail"
+              label="Email"
               required
               variant="underlined"
               color="deep-purple-lighten-1"
@@ -102,7 +102,7 @@
             <v-text-field
               v-model="state.phoneNumber"
               :error-messages="v$.phoneNumber.$errors.map((e) => e.$message)"
-              label="Telefono"
+              label="Phone Number"
               required
               variant="underlined"
               color="deep-purple-lighten-1"
@@ -141,13 +141,82 @@ const state = ref({
   phoneNumber: "",
 });
 
-const regions = ["Emilia", "Lombardia", "Calabria", "Piemonte"];
+const regions = [
+  "Abruzzo",
+  "Basilicata",
+  "Calabria",
+  "Campania",
+  "Emilia-Romagna",
+  "Friuli-Venezia Giulia",
+  "Lazio",
+  "Liguria",
+  "Lombardia",
+  "Marche",
+  "Molise",
+  "Piemonte",
+  "Puglia",
+  "Sardegna",
+  "Sicilia",
+  "Toscana",
+  "Trentino-Alto Adige",
+  "Umbria",
+  "Valle d'Aosta",
+  "Veneto"
+];
 
-const provinces = ["piacenza", "Milano", "Cosenza", "Torino"];
+const provinces = [
+  "Piacenza",
+  "Milano",
+  "Cosenza",
+  "Torino",
+  "Roma",
+  "Napoli",
+  "Firenze",
+  "Bari",
+  "Palermo",
+  "Bologna",
+  "Genova",
+  "Venezia",
+  "Verona",
+  "Cagliari",
+  "Catania",
+  "Brescia",
+  "Reggio Emilia",
+  "Perugia",
+  "Padova",
+  "Trieste"
+];
 
-const cities = ["Caorso", "Assago", "Lamezia", "Settimo Torinese"];
+const cities = [
+  "Portofino",
+  "Castelluccio",
+  "Manarola",
+  "Polignano a Mare",
+  "Pitigliano",
+  "Monte Isola",
+  "Castelsardo",
+  "Montefalco",
+  "Cinque Terre",
+  "Atrani",
+  "Procida",
+  "Castelmezzano",
+  "Montefioralle",
+  "Marzamemi",
+  "Castell'Arquato",
+  "Santa Maria del Molise",
+  "Matera",
+  "San Gimignano",
+  "Civita di Bagnoregio",
+  "Monteriggioni"
+];
 
-const cap = ["23900", "29010", "20900", "60900"];
+const cap = [
+  "23900", "29010", "20900", "60900",
+  "20121", "00118", "47890", "40121",
+  "96100", "16121", "00185", "37121",
+  "98122", "06123", "10121", "47121",
+  "84100", "90121", "34100", "50121"
+];
 
 const rules = {
   cap: { required },
@@ -155,7 +224,7 @@ const rules = {
   region: { required },
   province: { required },
   city: { required },
-  houseNumber: { required, numeric },
+  houseNumber: { required, numeric, maxLength: maxLength(3) },
   email: { required, email },
   phoneNumber: {
     required,
